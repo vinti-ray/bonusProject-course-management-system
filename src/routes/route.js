@@ -11,7 +11,7 @@ router.post("/createcourse",auth.authentication,auth.authforAdmin,courseControll
 router.put("/updateCourse",auth.authentication,auth.authforAdmin,courseController.updateCourse)
 router.delete("/deleteData",auth.authentication,auth.authforAdmin,courseController.deleteData)
 
-router.put("/approvedCourse",auth.authentication,courseController.approvedCourse)
+router.put("/approvedCourse/:courseId",auth.authentication,auth.authSuperAdmin,courseController.approvedCourse)
 router.get("/getData",auth.authentication,courseController.getdata)
 
 

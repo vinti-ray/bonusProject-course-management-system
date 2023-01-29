@@ -20,7 +20,7 @@ try {
 	  if (!isUrlExist) { return res.status(404).send({ status: false, message: "url doesn't exist" })};
 	
 	    const createData=await courseModel.create(data)
-	    return res.send({msg:createData})
+	    return res.status().send({msg:createData})
 } catch (error) {
 	return res.status(500).send({ error: error.message });
 }
@@ -40,9 +40,9 @@ try {
 	      if (!isUrlExist) { return res.status(404).send({ status: false, message: "url doesn't exist" })};
 	    }
 	
-	    const findData=await courseModel.findOne({adminId:req.decode.id},{isDeleted:false})
+	    const findData=await courseModel.findOne({adminId:req.decode.id,isDeleted:false})
 	    if (!findData) { return res.status(404).send({ status: false, message: "no data found" })};
-	    console.log(findData);
+	
 	    const updateData=await courseModel.updateMany({adminId:req.decode.id},data)
 	   return  res.send({data:updateData})
 } catch (error) {
@@ -54,7 +54,7 @@ try {
 //====================delete course====================
 const deleteData=async(req,res)=>{
 try {
-	    const findData=await courseModel.findOne({adminId:req.decode.id},{isDeleted:false})
+	    const findData=await courseModel.findOne({adminId:req.decode.id,isDeleted:false})
 	    if (!findData) { return res.status(404).send({ status: false, message: "no data found" })};
 	    
 	    const deleteData=await courseModel.updateMany({adminId:req.decode.id},{isDeleted:true})
@@ -69,12 +69,14 @@ try {
 const approvedCourse=async(req,res)=>{
     
 try {
-	    const findData=await courseModel.findOne({adminId:req.decode.id},{isDeleted:false})
+	  
+
+	    const findData=await courseModel.findOne({_id:req.params.courseId,isDeleted:false})
 	    if (!findData) { return res.status(404).send({ status: false, message: "no data found" })};
 	
-	    const updateData=await courseModel.findOneAndUpdate({adminId:req.decode.id},{isAprovved:true},{new:true})
+	    const updateData=await courseModel.findOneAndUpdate({_id:req.params.courseId},{isAprovved:true},{new:true})
 	
-	    res.send({data:updateData})
+	 return  res.status(200).send({data:updateData})
 } catch (error) {
 	return res.status(500).send({ error: error.message });
 }
@@ -82,9 +84,10 @@ try {
 //=======================get course==================
 const getdata= async (req,res)=>{
 try {
+	
 	    const findData=await courseModel.find({isAprovved:true}).sort({category:1})
 	    if(findData.length==0)  { return res.status(404).send({ status: false, message: "no data found" })};
-	    return res.send({msg:findData})
+	    return res.status(200).send({msg:findData})
 } catch (error) {
 	return res.status(500).send({ error: error.message });
 }

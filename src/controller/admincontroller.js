@@ -61,7 +61,7 @@ const logIn=async(req,res)=>{
 	
 	    let token=jwt.sign({id:findInDb._id,role:findInDb.role},"dangerous-secret-key")
 	
-	      return res.send({msg:token})
+	      return res.status(200).send({msg:token})
 	
 } catch (error) {
 	return res.status(500).send({ error: error.message });

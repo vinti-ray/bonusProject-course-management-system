@@ -36,7 +36,13 @@ const authforAdmin=async function(req,res,next){
 
 
 
-// const auth=async (req,res)=>{
+const authSuperAdmin=async (req,res,next)=>{
+  try {
+  if(req.decode.role!="Super Admin") return res.status(400).send({message:"you are not authorised"})
 
-// }
-module.exports={authentication,authforAdmin}
+  next();
+} catch (error) {
+  return res.status(500).send({ error: error.message });
+}
+}
+module.exports={authentication,authforAdmin,authSuperAdmin}
